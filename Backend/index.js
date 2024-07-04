@@ -8,8 +8,7 @@ app.use(cors());
 app.use(express.json())
 app.get('/', (req, res) => {
     res.send("Welcome to the Express Server!");
-}
-)
+})
 app.use("/user", userRoute)
 app.listen(8080, async () => {
     try {
