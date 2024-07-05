@@ -31,7 +31,7 @@ const register=async (req, res) => {
 
 const login=async (req, res) => {
     try {
-        const user = await UserModel.findOne({ username: req.body.username });
+        const user = await UserModel.findOne({ email: req.body.email });
         if (!user) {
             return res.status(400).send("Invalid username or password");
         }
