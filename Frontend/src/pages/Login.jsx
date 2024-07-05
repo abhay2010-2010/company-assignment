@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Navbar from '../components/Navbar';
+import { useNavigate } from 'react-router-dom';
 
-function App() {
+export default function Login() {
+  const navlink=useNavigate()
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     username: '',
@@ -24,32 +27,47 @@ function App() {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const url = isLogin
-      ? 'https://company-assignment-h9vq.onrender.com/user/login'
-      : 'https://company-assignment-h9vq.onrender.com/user/register';
-
+    const url = 'https://company-assignment-h9vq.onrender.com/user/login';
     try {
-      const payload = isLogin
-        ? { email: formData.email, password: formData.password }
-        : { username: formData.username, email: formData.email, password: formData.password };
-
+      const payload = { email: formData.email, password: formData.password };
       const response = await axios.post(url, payload);
       console.log(response.data);
-      
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        alert('Success! Token stored in localStorage.');
+      if (response.data) {
+        localStorage.setItem('token', response.data);
+        alert('Login successful! Token stored in localStorage.');
+        navlink("/")
       } else {
-        alert(response.data.message || 'Operation successful');
+        alert(response.data.message || 'Login successful');
       }
     } catch (error) {
-      alert(error.response?.data?.message || 'An error occurred');
+      alert(error.response?.data?.message || 'An error occurred during login');
     }
   };
 
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    const url = 'https://company-assignment-h9vq.onrender.com/user/register';
+    try {
+      const payload = {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+      };
+      const response = await axios.post(url, payload);
+      console.log(response.data);
+      alert(response.data.message || 'Registration successful');
+    } catch (error) {
+      alert(error.response?.data?.message || 'An error occurred during registration');
+    }
+  };
+
+  const handleSubmit = isLogin ? handleLogin : handleRegister;
+
   return (
+    <>
+  
     <div className="form-container">
       <h2>{isLogin ? 'Login' : 'Sign Up'}</h2>
       <form onSubmit={handleSubmit}>
@@ -98,7 +116,6 @@ function App() {
         </a>
       </div>
     </div>
+    </>
   );
 }
-
-export default App;
