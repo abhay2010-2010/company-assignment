@@ -44,24 +44,39 @@ export default function Login() {
     } catch (error) {
       alert(error.response?.data?.message || 'An error occurred during login');
     }
+    setFormData({
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    });
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
     const url = 'https://company-assignment-h9vq.onrender.com/user/register';
+    
     try {
-      const payload = {
-        username: formData.username,
-        email: formData.email,
-        password: formData.password,
-      };
-      const response = await axios.post(url, payload);
-      console.log(response.data);
-      alert(response.data.message || 'Registration successful');
+        const payload = {
+            username: formData.username,
+            email: formData.email,
+            password: formData.password,
+        };
+        
+        const response = await axios.post(url, payload);
+        console.log('Registration successful:', response.data);
+        alert(response.data.message || 'Registration successful');
     } catch (error) {
-      alert(error.response?.data?.message || 'An error occurred during registration');
+        console.error('Registration error:', error);
+        alert(error.response?.data?.message || 'Registration failed. Please try again.');
     }
-  };
+    setFormData({
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    });
+};
 
   const handleSubmit = isLogin ? handleLogin : handleRegister;
 
