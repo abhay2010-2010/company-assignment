@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 const connectToDB = require("./config/config");
 const userRoute = require("./routes/user");
+const dataRoutes = require("./routes/data");
 
 app.use(cors());
 app.use(express.json())
@@ -10,6 +11,7 @@ app.get('/', (req, res) => {
     res.send("Welcome to the Express Server!");
 })
 app.use("/user", userRoute)
+app.use("/records",dataRoutes)
 app.listen(8080, async () => {
     try {
         await connectToDB;
